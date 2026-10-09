@@ -1,3 +1,5 @@
+
+--Defino mi propio tipo Genero con los siguentes valores "accion" es el primer valor
 data Genero =
     Accion
     | Aventura
@@ -5,15 +7,17 @@ data Genero =
     | Deportes
     | Estrategia
     | Terror
-    deriving (Show)
-
+    deriving (Show,Eq)
+--Defino mi propio tipo Plataforma con los siguentes valores "PC" es el primer valor
 data Plataforma =
     PC
     | PlayStation
     | Xbox
     | Switch
-    deriving (Show)
+    deriving (Show,Eq)
 
+
+--deriving (Show) es el tipo que nos permite mostrar por pantalla
 data Videojuego = Videojuego {
     titulo :: String,
     genero :: Genero,
@@ -80,6 +84,7 @@ precioTotal :: [Videojuego] -> Int
 precioTotal = foldr (\j acumulador -> precio j + acumulador) 0
 
 -- FOLDR: Encontrar el videojuego con mayor puntaje (Juego del Año / GOTY)
+-- elMejor es una funcion auxiliar
 juegoGOTY :: [Videojuego] -> Videojuego
 juegoGOTY (primerJuego:resto) = foldr elMejor primerJuego resto
   where
@@ -88,8 +93,18 @@ juegoGOTY (primerJuego:resto) = foldr elMejor primerJuego resto
       | otherwise               = j2
 
 -- RECURSIVIDAD: Saber si una plataforma está disponible en ALGUNO de los juegos de la lista
+--elem sirve para preguntar si el valor esta en la lista
 estaEnPlataforma :: Plataforma -> [Videojuego] -> Bool
 estaEnPlataforma _ [] = False
 estaEnPlataforma plat (x:xs) 
     | plat `elem` plataformas x = True
     | otherwise                = estaEnPlataforma plat xs
+
+cantidadDisponibles :: [Videojuego] -> Int
+cantidadDisponibles = foldr(\x acc ->if disponible x ==True then 1+acc else acc)0
+
+cantidadDisponibles :: [Videojuego] -> Int
+cantidadDisponibles [] = 0
+cantidadDisponibles (x:xs)
+    | disponible x == True = 1 + cantidadDisponibles xs
+    | otherwise            = cantidadDisponibles xs
