@@ -108,3 +108,19 @@ cantidadDisponibles [] = 0
 cantidadDisponibles (x:xs)
     | disponible x == True = 1 + cantidadDisponibles xs
     | otherwise            = cantidadDisponibles xs
+
+cantidadPorGenero :: Genero -> [Videojuego] -> Int
+
+cantidadPorGenero generoBuscado [] = 0
+
+cantidadPorGenero generoBuscado (x:xs)
+    | genero x == generoBuscado = 1 + cantidadPorGenero generoBuscado xs
+    | otherwise = cantidadPorGenero generoBuscado xs
+
+existeJuego :: String -> [Videojuego] -> Bool
+
+existeJuego tituloBuscado [] = False
+
+existeJuego tituloBuscado (x:xs)
+    | titulo x == tituloBuscado = True
+    | otherwise = existeJuego tituloBuscado xs
